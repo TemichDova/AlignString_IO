@@ -28,7 +28,6 @@ namespace AlignString_IO
                 {
                     if (skipSymbol < s.Length) skipSymbol = s.Length;
                     outWords.Add(s);
-                    Console.WriteLine(s+" "+ skipSymbol);
                 }
             }
 
