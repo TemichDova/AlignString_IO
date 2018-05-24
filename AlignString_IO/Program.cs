@@ -84,7 +84,7 @@ namespace AlignString_IO
             //ширина
             for (int i=0;i<widhtText.Count; i++)
             {
-                widhtText[i] = skipSymbol/2 - widhtText[i];
+                widhtText[i] = skipSymbol - widhtText[i];
             }
             
             //Количество пробелов
