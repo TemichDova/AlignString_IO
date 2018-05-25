@@ -76,20 +76,22 @@ namespace AlignString_IO
                 {
                     if (skipSymbol < s.Length) skipSymbol = s.Length;
                     widhtText.Add(s.Length/2);
-                    
+                  
+                   
                     outWords.Add(s);
                 }
             }
-
+            
             //ширина
             for (int i=0;i<widhtText.Count; i++)
             {
-                widhtText[i] = skipSymbol - widhtText[i];
+                widhtText[i] = skipSymbol/2 - widhtText[i];
             }
             
             //Количество пробелов
             for (int i = 0; i < widhtText.Count; i++)
             {
+
                 for (int j = 0; j < widhtText[i]; j++)
                 {
                     outWords[i] = skip + outWords[i];
@@ -101,8 +103,9 @@ namespace AlignString_IO
             {
                 foreach (string n in outWords)
                 {
-                    sw.WriteLine( n);
+                    sw.Write( n+"\n");
                 }
+                                
             }
         }
     }
