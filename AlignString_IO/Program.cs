@@ -7,25 +7,25 @@ namespace AlignString_IO
 {
     class Program
     {
+
+        
         static void Main(string[] args)
         {
-            /*
-            string skip = "";
-            int skipSymbol = 0;
-            List<string> outWords = new List<string>();
-            */
-
             // Путь к файлам
-            string pathIn = @"..\..\..\in.txt";
-            string pathOut = @"..\..\..\out.txt";
+            string pathInFile = @"in.txt";
+            string pathOutFile = @"out.txt";
 
-            StreamReader _pathIn = new StreamReader(pathIn, Encoding.Default);
-            StreamWriter _pathOut = new StreamWriter(pathOut,false, Encoding.Default);
+            // var pathInReader = new StreamReader(pathIn, Encoding.Default);
+            // var pathOutWriter = new StreamWriter(pathOut,false, Encoding.Default);
 
+            //MethodOne(_pathIn, _pathOut); первый алгоритм
+            //MethodTwo(pathInReader, pathOutWriter);
 
-            // MethodOne(_pathIn, _pathOut); первый алгоритм
-            MethodTwo(_pathIn, _pathOut);
+            Console.WriteLine("Начало процедуры");
 
+            AlignToCenterTextInFile(pathInFile,pathOutFile);
+
+            Console.WriteLine("Процедура выполнена");
             Console.ReadLine();
         }
         
@@ -61,52 +61,132 @@ namespace AlignString_IO
             }
         }
 
-        static void MethodTwo(StreamReader _pathIn, StreamWriter _pathOut)
+        static void MethodTwo(StreamReader _pathInReader, StreamWriter _pathOutWriter)
         {
             string skip = " ";
             int skipSymbol = 0;
             List<string> outWords = new List<string>();
             List<int> widhtText = new List<int>();
 
+            Console.WriteLine("Начало процедуры");
+
             // Чтение файла
-            using (StreamReader sr = _pathIn)
+            Console.WriteLine("Чтение файла");
+            using (StreamReader sr = _pathInReader)
             {
                 string s = "";
                 while ((s = sr.ReadLine()) != null)
                 {
-                    if (skipSymbol < s.Length) skipSymbol = s.Length;
-                    widhtText.Add(s.Length/2);
-                  
-                   
-                    outWords.Add(s);
+                    if (skipSymbol < s.Length)
+                    {
+                        skipSymbol = s.Length;
+                        widhtText.Add(skipSymbol/2-s.Length/2);
+                        outWords.Add(s);
+                        if (widhtText.Count - 1 != 0  && widhtText[widhtText.Count - 2] == widhtText[widhtText.Count - 1])
+                        {
+                            for (int i = 0; i < widhtText.Count; i++)
+                            {
+                                if (i != widhtText.Count - 1)
+                                {
+                                    widhtText[i] = skipSymbol / 2 - outWords[i].Length / 2;
+                                    
+                                    outWords[i] = skip + outWords[i];
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        widhtText.Add(skipSymbol / 2 - s.Length / 2);
+                        outWords.Add(s);
+                        for (int j = 0; j < widhtText[widhtText.Count-1]; j++)
+                        {
+                            outWords[outWords.Count-1] = skip + outWords[outWords.Count-1];
+                        }
+                    }
+                    
                 }
             }
-            
-            //ширина
-            for (int i=0;i<widhtText.Count; i++)
-            {
-                widhtText[i] = skipSymbol/2 - widhtText[i];
-            }
-            
-            //Количество пробелов
-            for (int i = 0; i < widhtText.Count; i++)
-            {
 
-                for (int j = 0; j < widhtText[i]; j++)
-                {
-                    outWords[i] = skip + outWords[i];
-                }
-            }
-
+            Console.WriteLine("Запись файла");
             // Запись в файл File.CreateText(pathOut)
-            using (StreamWriter sw = _pathOut)
-            {
-                foreach (string n in outWords)
+            using (StreamWriter sw = _pathOutWriter)
+            { 
+                for (int i=0;i<outWords.Count;i++)
                 {
-                    sw.Write( n+"\n");
+                    if (i != outWords.Count - 1)
+                    {
+                        sw.Write(outWords[i] + "\n");
+                    }
+                    else
+                    {
+                        sw.Write(outWords[i]);
+                    }
                 }
-                                
             }
+        }
+
+        static void AlignToCenterTextInFile(string sourceFileName, string destinationFileName)
+        {
+            int maxWidthAlign = getMaxLineLenght(sourceFileName);
+            string[] linesText = LinesTextInFile(sourceFileName);
+
+            using (StreamWriter sw = new StreamWriter(destinationFileName, false, Encoding.Default))
+            {
+                for(int i= 0; i < linesText.Length; i++)
+                {
+                    if (linesText.Length - 1 != i)
+                    {
+                        sw.WriteLine(AlignToCenterLine(linesText[i], maxWidthAlign));
+                    }
+                    else
+                    {
+                        sw.Write(AlignToCenterLine(linesText[i], maxWidthAlign));
+                    }
+                }
+            }
+        }
+
+        static int getMaxLineLenght(string fileName)
+        {
+            int countSkipChar = 0;
+            
+            using (StreamReader sr = new StreamReader(fileName, Encoding.Default))
+            {
+                string readLine;
+                while ((readLine = sr.ReadLine()) != null)
+                {
+                    if (countSkipChar < readLine.Length ) countSkipChar = readLine.Length;
+                                      
+                }
+            }
+            return countSkipChar;
+        }
+
+        static string AlignToCenterLine(string line, int width)
+        {
+            string skipChar = " ";
+
+            for (int i=0; i < width - line.Length; i++)
+            {
+                line = skipChar + line;
+            }
+            return line;
+        }
+        
+        static string[] LinesTextInFile(string fileName)
+        {
+            List<string> lineText = new List<string>();
+
+            using (StreamReader sr = new StreamReader(fileName, Encoding.Default))
+            {
+                string readLine;
+                while ((readLine = sr.ReadLine()) != null)
+                {
+                    lineText.Add(readLine);
+                }
+            }
+            return lineText.ToArray();
         }
     }
 }
