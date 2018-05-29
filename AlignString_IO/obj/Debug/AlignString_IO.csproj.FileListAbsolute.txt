@@ -5,3 +5,9 @@ M:\Project C#\IO\AlignString_IO\AlignString_IO\obj\Debug\AlignString_IO.csprojRe
 M:\Project C#\IO\AlignString_IO\AlignString_IO\obj\Debug\AlignString_IO.csproj.CoreCompileInputs.cache
 M:\Project C#\IO\AlignString_IO\AlignString_IO\obj\Debug\AlignString_IO.exe
 M:\Project C#\IO\AlignString_IO\AlignString_IO\obj\Debug\AlignString_IO.pdb
+C:\Users\Артем Шашкин\Desktop\AlignString_IO-master\AlignString_IO\bin\Debug\AlignString_IO.exe.config
+C:\Users\Артем Шашкин\Desktop\AlignString_IO-master\AlignString_IO\bin\Debug\AlignString_IO.exe
+C:\Users\Артем Шашкин\Desktop\AlignString_IO-master\AlignString_IO\bin\Debug\AlignString_IO.pdb
+C:\Users\Артем Шашкин\Desktop\AlignString_IO-master\AlignString_IO\obj\Debug\AlignString_IO.csproj.CoreCompileInputs.cache
+C:\Users\Артем Шашкин\Desktop\AlignString_IO-master\AlignString_IO\obj\Debug\AlignString_IO.exe
+C:\Users\Артем Шашкин\Desktop\AlignString_IO-master\AlignString_IO\obj\Debug\AlignString_IO.pdb
