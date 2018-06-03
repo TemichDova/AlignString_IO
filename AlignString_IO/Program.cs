@@ -14,15 +14,15 @@ namespace AlignString_IO
         static void Main(string[] args)
         {
             // Путь к файлам
-            string pathInFile = @"in.txt";
-            string pathOutFile = @"out.txt";
+            string pathInFile = workingTheFile.PathToInFile;
+            string pathOutFile = workingTheFile.PathToOutFile;
+            pathInFile = @"in.txt";
+            pathOutFile = @"out.txt";
 
-            // var pathInReader = new StreamReader(pathIn, Encoding.Default);
-            // var pathOutWriter = new StreamWriter(pathOut,false, Encoding.Default);
-           
-            workingTheFile.InFileSearchPath(ref pathInFile);
 
-            workingTheFile.OutFileSearchPath(ref pathOutFile);
+            workingTheFile.InFileSearchPath(pathInFile);
+
+            workingTheFile.OutFileSearchPath(pathOutFile);
 
 
             Console.WriteLine("\nНачало процедуры");
@@ -37,103 +37,6 @@ namespace AlignString_IO
             Console.ReadLine();
         }
         
-        static void MethodOne(StreamReader _pathIn, StreamWriter _pathOut)
-        {
-            string skip = "";
-            int skipSymbol = 0;
-            List<string> outWords = new List<string>();
-            // Чтение файла
-            using (StreamReader sr = _pathIn)
-            {
-                string s = "";
-                while ((s = sr.ReadLine()) != null)
-                {
-                    if (skipSymbol < s.Length) skipSymbol = s.Length;
-                    outWords.Add(s);
-                }
-            }
-
-            //Количество пробелов
-            for (int i = 0; i < skipSymbol; i++)
-            {
-                skip += " ";
-            }
-
-            // Запись в файл File.CreateText(pathOut)
-            using (StreamWriter sw = _pathOut)
-            {
-                foreach (string n in outWords)
-                {
-                    sw.WriteLine(skip + n);
-                }
-            }
-        }
-
-        static void MethodTwo(StreamReader _pathInReader, StreamWriter _pathOutWriter)
-        {
-            string skip = " ";
-            int skipSymbol = 0;
-            List<string> outWords = new List<string>();
-            List<int> widhtText = new List<int>();
-
-            Console.WriteLine("Начало процедуры");
-
-            // Чтение файла
-            Console.WriteLine("Чтение файла");
-            using (StreamReader sr = _pathInReader)
-            {
-                string s = "";
-                while ((s = sr.ReadLine()) != null)
-                {
-                    if (skipSymbol < s.Length)
-                    {
-                        skipSymbol = s.Length;
-                        widhtText.Add(skipSymbol/2-s.Length/2);
-                        outWords.Add(s);
-                        if (widhtText.Count - 1 != 0  && widhtText[widhtText.Count - 2] == widhtText[widhtText.Count - 1])
-                        {
-                            for (int i = 0; i < widhtText.Count; i++)
-                            {
-                                if (i != widhtText.Count - 1)
-                                {
-                                    widhtText[i] = skipSymbol / 2 - outWords[i].Length / 2;
-                                    
-                                    outWords[i] = skip + outWords[i];
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        widhtText.Add(skipSymbol / 2 - s.Length / 2);
-                        outWords.Add(s);
-                        for (int j = 0; j < widhtText[widhtText.Count-1]; j++)
-                        {
-                            outWords[outWords.Count-1] = skip + outWords[outWords.Count-1];
-                        }
-                    }
-                    
-                }
-            }
-
-            Console.WriteLine("Запись файла");
-            // Запись в файл File.CreateText(pathOut)
-            using (StreamWriter sw = _pathOutWriter)
-            { 
-                for (int i=0;i<outWords.Count;i++)
-                {
-                    if (i != outWords.Count - 1)
-                    {
-                        sw.Write(outWords[i] + "\n");
-                    }
-                    else
-                    {
-                        sw.Write(outWords[i]);
-                    }
-                }
-            }
-        }
-
         static void SelectionAlignTextInFile(string sourceFileName, string destinationFileName)
         {
             int indexSelectionAlignText = -1;

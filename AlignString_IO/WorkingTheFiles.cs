@@ -6,72 +6,77 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace AlignString_IO
 {
     class WorkingTheFiles
     {
         
-        public void InFileSearchPath(ref string pathFile)
+        public string PathToInFile { get; set; }
+        public string PathToOutFile { get; set; }
+
+        public void InFileSearchPath(string pathFile)
         {
             string categoryInFile = "Входящий";
-            //метка для goto
-            SearchPathFile:
-           
+                    
             if (SearchPathFile(pathFile,categoryInFile))
             {
                 Console.WriteLine("\nПродолжить работать в этом файле?: Yes (Y), No (N)");
-                
-                //Если null, то выдает ошибку. если значение 'nTEXT', то выдает true. 
-                char boolChar = Console.ReadLine()[0];
-                if (boolChar == 'N' || boolChar == 'n')
+                                                             
+                if (!GetCheckWriteOption())
                 {
                     Console.WriteLine("\nНовый путь:");
-                    pathFile = Console.ReadLine();
-                    NewPathInFile(pathFile);
-                    goto SearchPathFile;
+                    PathToInFile = Console.ReadLine();
+                    NewPathInFile(PathToInFile);
+                    InFileSearchPath(PathToInFile);
                 }
                 else
                 {
-                    OpenFile(pathFile);
+                    Console.WriteLine("\nДополнить файл через консоль?: Yes (Y), No (N)");
+                    if (GetCheckWriteOption())
+                    {
+                        Console.WriteLine("Введите новые данные, после завршение напише '.end' :\n");
+                        NewWriteFileConsole(pathFile);
+                    }
+                    else
+                    {
+                        OpenFile(pathFile);
+                    }
                 }
-                
+                                              
             }
             else
             {
                 Console.WriteLine("\nЗадать новый путь к входящиму файлу");
-                pathFile = Console.ReadLine();
-                NewPathInFile(pathFile);
-                goto SearchPathFile;
+                PathToInFile = Console.ReadLine();
+                NewPathInFile(PathToInFile);
+                InFileSearchPath(PathToInFile);
             }
         }
 
-        public void OutFileSearchPath(ref string pathFile)
+        public void OutFileSearchPath(string pathFile)
         {
             string categoryOutFile = "Выходящий";
-            //метка для goto
-            SearchPathFile:
-
+            
             if (SearchPathFile(pathFile, categoryOutFile))
             {
                 Console.WriteLine("\nПродолжить работать в этом файле?: Yes (Y), No (N)");
-                
-                //Если null, то выдает ошибку. если значение 'nTEXT', то выдает true. 
-                char boolChar = Console.ReadLine()[0];
-                if (boolChar == 'N' || boolChar == 'n')
+                               
+                if (!GetCheckWriteOption())
                 {
                     Console.WriteLine("\nНовый путь:");
-                    pathFile = Console.ReadLine();
-                    NewPathInFile(pathFile);
-                    goto SearchPathFile;
+                    PathToOutFile = Console.ReadLine();
+                    NewPathInFile(PathToOutFile);
+                    OutFileSearchPath(PathToOutFile);
                 }
 
             }
             else
             {
                 Console.WriteLine("\nЗадать новый путь к выходящиму файлу");
-                pathFile = Console.ReadLine();
-                NewPathInFile(pathFile);
-                goto SearchPathFile;
+                PathToOutFile = Console.ReadLine();
+                NewPathInFile(PathToOutFile);
+                OutFileSearchPath(PathToOutFile);
             }
         }
 
@@ -94,38 +99,93 @@ namespace AlignString_IO
 
         public void NewPathInFile(string newPath)
         {
-            
-            try
+            string categoryFile = "Существующий";
+            if (SearchPathFile(newPath, categoryFile))
             {
-                using (FileStream fs = File.Create(newPath))
+
+            }
+            else
+            {
+                try
                 {
+                    using (FileStream fs = File.Create(newPath))
+                    {
+
+                    }
+                }
+                catch
+                {
+                    Console.WriteLine("Неверный путь к файлу");
 
                 }
             }
-            catch
-            {
-                Console.WriteLine("Неверный путь к файлу");
-               
-            }
+            
             
         }
 
-        public void NewWriteFile()
+        public void NewWriteFileConsole(string pathInFile)
         {
             
+            string wrtiteConsoleInFile = "";
+            using (StreamWriter sw = File.AppendText(pathInFile))
+            {
+              
+                while (wrtiteConsoleInFile != ".end")
+                {
+                    wrtiteConsoleInFile = Console.ReadLine();
+                    if (wrtiteConsoleInFile == ".end") break; 
+                    sw.WriteLine(wrtiteConsoleInFile);
+                }
+
+            }
         }
 
         public void OpenFile(string pathFile)
         {
             var fileInfo = new FileInfo(pathFile);
             Console.WriteLine("Открыть {0} файл? Yes (Y), No (N)",fileInfo.Name);
-            char boolChar = Console.ReadLine()[0];
-            if (boolChar == 'Y' || boolChar == 'y')
+            
+            if (GetCheckWriteOption())
             {
-               
                 Process.Start(pathFile);
             }
            
         }
+              
+
+        public bool GetCheckWriteOption()
+        {
+            string errorWriteSybol = "Вы ввели не верное значение";
+            //true = yes; false = no;
+            string symbolYN = Console.ReadLine();
+            if (symbolYN.Length == 1)
+            {
+                if (symbolYN[0] == 'Y' || symbolYN[0] == 'y')
+                {
+                    return true;
+                }
+                else
+                {
+                    if(symbolYN[0] == 'N' || symbolYN[0] == 'n')
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        Console.WriteLine(errorWriteSybol);
+                        return GetCheckWriteOption();
+                    }
+                }
+
+            }
+            else
+            {
+                Console.WriteLine(errorWriteSybol);
+                return GetCheckWriteOption();
+            }
+
+            
+        }
+                
     }
 }
