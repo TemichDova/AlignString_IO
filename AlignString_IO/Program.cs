@@ -9,71 +9,68 @@ namespace AlignString_IO
 {
     class Program 
     {
-        static WorkingTheFiles workingTheFile = new WorkingTheFiles();
+        static OperationOnFiles operationOnFiles = new OperationOnFiles();
 
         static void Main(string[] args)
         {
-            // Путь к файлам
-            string pathInFile = workingTheFile.PathToInFile;
-            string pathOutFile = workingTheFile.PathToOutFile;
-            pathInFile = @"in.txt";
-            pathOutFile = @"out.txt";
+         
+            Console.WriteLine("Начало работы программы");
+                      
+            operationOnFiles.InteractiveConsoleInputFile();
 
-
-            workingTheFile.InFileSearchPath(pathInFile);
-
-            workingTheFile.OutFileSearchPath(pathOutFile);
-
-
-            Console.WriteLine("\nНачало процедуры");
-            Console.WriteLine("------------------------------");           
-            SelectionAlignTextInFile(pathInFile, pathOutFile);
-
-            Console.WriteLine("------------------------------");
-            Console.WriteLine("Процедура выполнена");
-
-            workingTheFile.OpenFile(pathOutFile);
-
-            Console.ReadLine();
-        }
-        
-        static void SelectionAlignTextInFile(string sourceFileName, string destinationFileName)
-        {
-            int indexSelectionAlignText = -1;
-            Console.WriteLine("Выберите метод выравнивание текста: \nПо левому краю - 0 \nПо правому краю - 1 \nПо центру - 2");
-
-            //Метка для goto
-            Restart:
-                if(indexSelectionAlignText != -1) Console.WriteLine("Вы ввели не верное значение, введите заного");
-                        
-            if (int.TryParse(Console.ReadLine(), out indexSelectionAlignText))
+            Console.WriteLine("Дополнить входящий файл через консоль?: Yes(Y) No(N)");
+            if (operationOnFiles.CheckWriteOption())
             {
-                switch (indexSelectionAlignText)
-                {
-                    case 0:
-                        Console.WriteLine("\nВыравниение по левому краю");
-                        AlignTextInFile(sourceFileName, destinationFileName,indexSelectionAlignText);
-                        break;
-
-                    case 1:
-                        Console.WriteLine("\nВыравниение по правому краю");
-                        AlignTextInFile(sourceFileName, destinationFileName, indexSelectionAlignText);
-                        break;
-
-                    case 2:
-                        Console.WriteLine("\nВыравниение по цетру");
-                        AlignTextInFile(sourceFileName, destinationFileName, indexSelectionAlignText);
-                        break;
-
-                    default:
-                        goto Restart;
-                }
+                Console.WriteLine("Для окончание введите с новой строки .end");
+                operationOnFiles.NewWriteFileConsole(operationOnFiles.PathInputFile);
             }
             else
             {
-                goto Restart;
+                Console.WriteLine("Открыть входящий файл?: Yes(Y) No(N)");
+                if (operationOnFiles.CheckWriteOption())
+                {
+                    operationOnFiles.OpenFile(operationOnFiles.PathInputFile);
+                }
             }
 
+            operationOnFiles.InteractiveConsoleOutFile();
+            
+            Console.WriteLine("\nНачало процедуры");
+            Console.WriteLine("------------------------------");
+            
+            AlignTextInFile(operationOnFiles.PathInputFile,operationOnFiles.PathOutFile,SelectAlignTextConsole());
+            
+            Console.WriteLine("------------------------------");
+            Console.WriteLine("Процедура выполнена");
+
+            Console.WriteLine("\nОткрыть выходящий файл?: Yes(Y) No(N)");
+
+            if (operationOnFiles.CheckWriteOption())
+            {
+                operationOnFiles.OpenFile(operationOnFiles.PathOutFile);
+            }
+            Console.ReadLine();
+        }
+              
+        static int SelectAlignTextConsole()
+        {
+            int indexSelectionAlignText = -1;
+            
+            Console.WriteLine("Выберите метод выравнивание текста: \nПо левому краю - 1 \nПо правому краю - 2 \nПо центру - 3");
+                        
+            while (!Int32.TryParse(Console.ReadLine(), out indexSelectionAlignText) || indexSelectionAlignText > 3 || indexSelectionAlignText < 1  )
+            {
+                if ( 3>= indexSelectionAlignText && indexSelectionAlignText >=1)
+                {
+                    return indexSelectionAlignText;
+                }
+                else
+                {
+                    Console.WriteLine("Вы ввели не верное значение, введите заного");
+                }
+            }
+            
+            return indexSelectionAlignText;
         }
 
         static void AlignTextInFile(string sourceFileName, string destinationFileName, int indexAlignText)
@@ -125,15 +122,15 @@ namespace AlignString_IO
             switch (indexAlignText)
             {
                 //Left Align
-                case 0:
+                case 1:
                     return line.PadRight(line.Length);
 
                 //Right Align
-                case 1:
+                case 2:
                     return line.PadLeft(width);
 
                 //Center Align
-                case 2:
+                case 3:
                     return line.PadLeft(width / 2 - line.Length / 2 + line.Length);
                 default:
                     return line;
@@ -158,6 +155,6 @@ namespace AlignString_IO
             return lineText.ToArray();
         }
 
-       
+        
     }
 }
