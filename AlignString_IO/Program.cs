@@ -15,9 +15,29 @@ namespace AlignString_IO
         {
          
             Console.WriteLine("Начало работы программы");
-                      
-            operationOnFiles.InteractiveConsoleInputFile();
+            if (operationOnFiles.PathInputFile == null || operationOnFiles.PathInputFile == "" || operationOnFiles.PathInputFile == " ")
+            {
+                Console.WriteLine("Входящий файл по умолчанию не задан, введите существующий путь");
+                
+                do
+                {
+                    
+                    operationOnFiles.SelectPathInputFile(Console.ReadLine());
+                    
+                } while (!operationOnFiles.SearchPathFile(operationOnFiles.PathInputFile,false));
+            }
 
+            if (operationOnFiles.PathOutFile == null || operationOnFiles.PathOutFile == "" || operationOnFiles.PathOutFile == " ")
+            {
+                Console.WriteLine("Выходящий файл по умолчанию не задан, введите существующий путь");
+                do
+                {
+                    operationOnFiles.SelectPathOutFile(Console.ReadLine());
+                } while (!operationOnFiles.SearchPathFile(operationOnFiles.PathOutFile,false));
+            }
+
+            operationOnFiles.InteractiveConsoleInputFile();
+            
             Console.WriteLine("Дополнить входящий файл через консоль?: Yes(Y) No(N)");
             if (operationOnFiles.CheckWriteOption())
             {

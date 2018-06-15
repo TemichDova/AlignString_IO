@@ -12,21 +12,22 @@ namespace AlignString_IO
     class OperationOnFiles
     {
 
-        public string PathInputFile { get; set; } = "in.txt";
-        public string PathOutFile { get; set; } = @"out.txt";
+        public string PathInputFile { get; set; } 
+        public string PathOutFile { get; set; } 
 
-        public void SelectPathInputFile(string pathFile = @"in.txt", bool newFile = false)
+        public void SelectPathInputFile(string pathFile , bool newFile = false)
         {
-            
+
             PathInputFile = String.Format(@"{0}", pathFile);
 
             if (newFile)
             {
                 NewPathInFile(PathInputFile);
             }
+          
         }
 
-        public void SelectPathOutFile(string pathFile = @"out.txt", bool newFile = false)
+        public void SelectPathOutFile(string pathFile , bool newFile = false)
         {
             PathOutFile = String.Format(@"{0}", pathFile);
 
@@ -37,19 +38,25 @@ namespace AlignString_IO
 
         }
 
-        public bool SearchPathFile(string pathFile)
+        public bool SearchPathFile(string pathFile, bool messengeConsole = true)
         {
                         
             var fileInfo = new FileInfo(pathFile);
 
             if (File.Exists(pathFile))
             {
-                Console.WriteLine("\nДоступен файл {0}", fileInfo.Name);
+                if (messengeConsole)
+                {
+                    Console.WriteLine("\nДоступен файл {0}", fileInfo.Name);
+                }
                 return true;
             }
             else
             {
-                Console.WriteLine("\nФайл не найден "+pathFile);
+                if (messengeConsole)
+                {
+                    Console.WriteLine("\nФайл не найден " + pathFile);
+                }
                 return false;
             }
             
@@ -74,7 +81,6 @@ namespace AlignString_IO
                 catch
                 {
                     Console.WriteLine("Неверный путь к файлу");
-
                 }
             }
             
@@ -103,6 +109,7 @@ namespace AlignString_IO
               
         public void InteractiveConsoleInputFile()
         {
+            Console.WriteLine("-----Входящий файл-----");
             do
             {
                 if (SearchPathFile(PathInputFile))
@@ -144,6 +151,7 @@ namespace AlignString_IO
 
         public void InteractiveConsoleOutFile()
         {
+            Console.WriteLine("-----Выходящий файл-----");
             do
             {
                 if (SearchPathFile(PathOutFile))
