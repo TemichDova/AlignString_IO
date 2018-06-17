@@ -7,14 +7,42 @@ using System.Diagnostics;
 
 namespace AlignString_IO 
 {
+    using static AlignString_IO.OperationOnFiles;
     class Program 
     {
         static OperationOnFiles operationOnFiles = new OperationOnFiles();
-
+ 
         static void Main(string[] args)
         {
-         
+ 
+            if (args.Length == 0)
+            {
+
+            }
+            else
+            {
+              
+                string typeFile;
+               
+                for (int i = 0; i < args.Length; i++)
+                {
+                    typeFile = args[i];
+                    if (typeFile == "/I" || typeFile == "/i")
+                    {
+                        operationOnFiles.SelectPathInputFile(args[i+1]);
+                    }
+
+                    if (typeFile == "/O" || typeFile == "/o")
+                    {
+                        operationOnFiles.SelectPathOutFile(args[i+1]);
+                    }
+                }
+
+            }
+
+
             Console.WriteLine("Начало работы программы");
+            
             if (operationOnFiles.PathInputFile == null || operationOnFiles.PathInputFile == "" || operationOnFiles.PathInputFile == " ")
             {
                 Console.WriteLine("Входящий файл по умолчанию не задан, введите существующий путь");

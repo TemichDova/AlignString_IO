@@ -1,7 +1,6 @@
 M:\Project C#\IO\AlignString_IO\AlignString_IO\bin\Debug\AlignString_IO.exe.config
 M:\Project C#\IO\AlignString_IO\AlignString_IO\bin\Debug\AlignString_IO.exe
 M:\Project C#\IO\AlignString_IO\AlignString_IO\bin\Debug\AlignString_IO.pdb
-M:\Project C#\IO\AlignString_IO\AlignString_IO\obj\Debug\AlignString_IO.csprojResolveAssemblyReference.cache
 M:\Project C#\IO\AlignString_IO\AlignString_IO\obj\Debug\AlignString_IO.csproj.CoreCompileInputs.cache
 M:\Project C#\IO\AlignString_IO\AlignString_IO\obj\Debug\AlignString_IO.exe
 M:\Project C#\IO\AlignString_IO\AlignString_IO\obj\Debug\AlignString_IO.pdb

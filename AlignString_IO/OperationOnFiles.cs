@@ -11,7 +11,7 @@ namespace AlignString_IO
 {
     class OperationOnFiles
     {
-
+      
         public string PathInputFile { get; set; } 
         public string PathOutFile { get; set; } 
 
